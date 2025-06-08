@@ -90,6 +90,9 @@ class File(Base):
 
 app = FastAPI()
 
+# Set your FormSG secret key (replace with your actual key or use env var)
+FORM_SECRET_KEY = "AsrsyzbV7vWlfOgK7jQBHe62z1NLeLc5hYWTcJ8LcGY="
+
 @app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
@@ -137,6 +140,9 @@ async def upload_s10_template(file: UploadFile):
         # Read the file content first
         file_content = await file.read()
         
+        # Parse JSON content
+        json_content = json.loads(file_content)
+        
         # generate file name
         file_name, file_extension = os.path.splitext(file.filename)
         curr_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -154,9 +160,11 @@ async def upload_s10_template(file: UploadFile):
         await file.seek(0)
         s3_response = await s3_upload(file, s3_client=get_s3_client())
         
-        # Create template record
-        template_id = await insert_template(name=file_name, keys=s3_response.json())
+        # Create template record with JSON content as keys
+        template_id = await insert_template(name=file_name, keys=json_content)
         return {"template_id": template_id, "s3_response": s3_response.json()}
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON file: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
