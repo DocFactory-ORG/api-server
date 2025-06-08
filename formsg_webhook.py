@@ -90,9 +90,6 @@ class File(Base):
 
 app = FastAPI()
 
-# Set your FormSG secret key (replace with your actual key or use env var)
-FORM_SECRET_KEY = "AsrsyzbV7vWlfOgK7jQBHe62z1NLeLc5hYWTcJ8LcGY="
-
 @app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
