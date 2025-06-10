@@ -1,0 +1,14 @@
+{
+  "name": "document-factory-api",
+  "framework": "python",
+  "scripts": {
+    "build": "echo \"no build required\"",
+    "start": "python formsg_webhook.py"
+  },
+  "include": [
+    "airbase.sh",
+    "formsg_webhook.py",
+    "requirements.txt",
+    "venv/**/*"
+  ]
+}
