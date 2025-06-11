@@ -7,7 +7,7 @@
   },
   "include": [
     "airbase.sh",
-    "formsg_webhook.py",
+    "*.py",
     "requirements.txt",
     "venv/**/*"
   ]

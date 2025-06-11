@@ -40,5 +40,5 @@ python3 formsg_webhook.py
 ## Build
 
 ```shell
-airbase build
+airbase build && ./patch_build.sh
 ```
